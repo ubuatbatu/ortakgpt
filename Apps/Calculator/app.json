@@ -1,0 +1,8 @@
+{
+  "id": "app.calculator",
+  "name": "Calculator",
+  "entry": "main.js",
+  "styles": ["style.css"],
+  "description": "A professional calculator supporting basic arithmetic and memory functions.",
+  "version": "1.0.0"
+}

@@ -1,0 +1,8 @@
+{
+  "id": "app.filemanager",
+  "name": "Dosya Yöneticisi",
+  "entry": "main.js",
+  "styles": ["style.css"],
+  "description": "Kullanıcının sanal dosya sistemini yönetmesi için bir dosya yöneticisi. Klasörlerde gezinebilir, dosyaları açabilir ve yönetebilir.",
+  "fileAssociations": []
+}

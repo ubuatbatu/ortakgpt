@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta http-equiv="Content-Security-Policy"
+  content="default-src 'self' file: data: 'unsafe-inline';
+           img-src 'self' data: blob: https:;
+           style-src 'self' 'unsafe-inline' file: data:;
+           font-src 'self' data:;
+           script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net;
+           connect-src 'self' https://*.wikipedia.org https://*.wikimedia.org https://*.wikidata.org ws: wss:;
+           media-src 'self' blob: data:;
+           object-src 'none'">
+
+
+  <meta charset="utf-8" />
+  <title>MyExplorerV2</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="theme-dark">
+  <div id="desktop"></div>
+  <div id="taskbar">
+    <button id="btn-explorer">Explorer</button>
+    <div id="tasklist"></div>
+  </div>
+
+  <div id="windows"></div>
+
+  <template id="win-template">
+    <div class="window">
+      <div class="titlebar">
+        <span class="title"></span>
+        <div class="actions">
+          <button data-act="min">–</button>
+          <button data-act="close">×</button>
+        </div>
+      </div>
+      <div class="content"></div>
+    </div>
+  </template>
+
+  <script type="module" src="./renderer.js"></script>
+</body>
+</html>

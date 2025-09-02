@@ -1,0 +1,7 @@
+{
+  "id": "app.terminal",
+  "name": "Terminal",
+  "entry": "main.js",
+  "styles": ["style.css"],
+  "description": "VFS üzerinde minik terminal"
+}

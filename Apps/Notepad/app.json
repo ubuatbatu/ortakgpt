@@ -1,0 +1,8 @@
+{
+  "id": "app.notepad",
+  "name": "Not Defteri",
+  "entry": "main.js",
+  "styles": ["style.css"],
+  "fileAssociations": [".txt", ".md"],
+  "description": "Basit metin düzenleyici"
+}

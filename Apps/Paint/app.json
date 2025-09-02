@@ -1,0 +1,8 @@
+{
+  "id": "app.paint",
+  "name": "Paint",
+  "entry": "main.js",
+  "styles": ["style.css"],
+  "fileAssociations": [".png", ".jpg", ".jpeg", ".pnt"],
+  "description": "Basit canvas tabanlı çizim aracı (VFS kaydet/aç)"
+}

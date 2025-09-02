@@ -1,0 +1,60 @@
+{
+  "name": "myexplorer-v2",
+  "version": "0.1.0",
+  "description": "MyExplorer V2 — VFS, Terminal, Settings ve sekmeli Browser içeren Electron uygulaması",
+  "main": "main.js",
+  "author": "Batuhan",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9"
+  },
+  "dependencies": {
+    "@nut-tree-fork/nut-js": "^4.2.6",
+    "node-llama-cpp": "file:node-llama-cpp-3.12.1.tgz"
+  },
+  "build": {
+    "appId": "com.batuhan.myexplorerv2",
+    "productName": "MyExplorer V2",
+    "asar": true,
+    "files": [
+      "**/*",
+      "!dist/**/*",
+      "!.git/**/*",
+      "!.vscode/**/*",
+      "!node_modules/.cache/**/*"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.utilities",
+      "artifactName": "${productName}-${version}-mac.${ext}"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Utility",
+      "artifactName": "${productName}-${version}.${ext}"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "id": "app.mira",
+  "name": "Mira",
+  "description": "MyExplorerV2 için geliştirilmiş yapay zeka asistanı.",
+  "entry": "main.js"
+}

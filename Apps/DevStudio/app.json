@@ -1,0 +1,8 @@
+{
+  "id": "app.devstudio",
+  "name": "Dev Studio",
+  "description": "HTML/JS/CSS/JSON için mini IDE + paketleyici. Program Files altına .vexe olarak kurar.",
+  "entry": "main.js",
+  "styles": ["styles.css"],
+  "fileAssociations": []
+}

@@ -1,0 +1,13 @@
+.paint { display:flex; flex-direction:column; height:100%; background:#0f141d; }
+.paint .toolbar {
+  display:flex; flex-wrap:wrap; gap:6px; padding:8px; border-bottom:1px solid #273149; background:#0f141d;
+}
+.paint .toolbar button, .paint .toolbar select, .paint .toolbar input[type="text"] {
+  background:#1a2130; color:#e7eaf0; border:1px solid #273149; padding:6px 10px; border-radius:8px;
+}
+.paint .toolbar input[type="color"] {
+  width:38px; height:32px; border:none; background:transparent; padding:0; cursor:pointer;
+}
+.paint .canvas-wrap { position:relative; flex:1; overflow:hidden; }
+.paint canvas { position:absolute; left:0; top:0; width:100%; height:100%; background:#11151f; cursor: crosshair; }
+.paint .status { padding:6px 10px; font-size:12px; border-top:1px solid #273149; opacity:.85; }

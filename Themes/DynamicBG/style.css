@@ -1,0 +1,10 @@
+/* DynamicBG — canvas arka plan katmanı */
+#bgfx{
+  position: fixed;
+  inset: 0 0 var(--taskbar-h, 48px) 0; /* görev çubuğu alanını boş bırak */
+  z-index: 0;
+  pointer-events: none;                 /* tıklamayı engellemesin */
+  filter: saturate(1.06) contrast(1.04);
+  opacity: .95;
+}
+body.theme-light #bgfx{ opacity: .78; }

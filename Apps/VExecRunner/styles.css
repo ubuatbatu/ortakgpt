@@ -1,0 +1,9 @@
+/* Apps/VExecRunner/styles.css */
+.runner{display:grid;grid-template-rows:auto auto 1fr;gap:8px;height:100%;color:#e7eaf0}
+.r-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;border-bottom:1px solid #213049;background:linear-gradient(180deg, rgba(15,20,29,.9), rgba(15,20,29,.75));}
+.r-title{font-weight:700}
+.r-actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn{height:30px;padding:0 10px;border:1px solid #213049;border-radius:10px;background:#1a2130;color:#e7eaf0;cursor:pointer}
+.btn.primary{background:linear-gradient(180deg,#314063,#243152)}
+.frame{width:100%;height:100%;border:0;background:white;border-radius:8px;box-shadow:0 0 0 1px #213049 inset}
+.r-log{margin:0;padding:8px;font:12px/1.5 ui-monospace,monospace;background:#0f141d;color:#e7eaf0;border-top:1px solid #213049;max-height:160px;overflow:auto}

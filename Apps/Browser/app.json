@@ -1,0 +1,7 @@
+{
+  "id": "app.browser",
+  "name": "Browser",
+  "entry": "main.js",
+  "styles": ["style.css"],
+  "description": "Sekmeli web tarayıcı (Back/Forward/Reload/Home, adres çubuğu, sekmeler)"
+}

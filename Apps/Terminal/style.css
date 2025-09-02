@@ -1,0 +1,15 @@
+/* Enhanced Terminal styles */
+.terminal { display:flex; flex-direction:column; height:100%; background:#0f141d; }
+.terminal .screen { flex:1; padding:8px; font:13px Consolas, Menlo, monospace; color:#cfe1ff; overflow:auto; white-space:pre-wrap; }
+.terminal .input { display:flex; gap:8px; align-items:center; padding:8px; border-top:1px solid #273149; }
+.terminal .prompt { color:#8fb3ff; font:13px Consolas, Menlo, monospace; user-select:none; }
+.terminal input.cmd { flex:1; padding:6px 8px; background:#0f141d; color:#e7eaf0; border:1px solid #273149; border-radius:8px; }
+.terminal button { background:#1a2130; color:#e7eaf0; border:1px solid #273149; padding:6px 10px; border-radius:8px; }
+
+/* output flavors */
+.terminal .stdout pre { margin:0; white-space:pre-wrap; }
+.terminal .stdout .dim { opacity:.7; font-size:12px; }
+.terminal .stderr { color:#ff9f9f; }
+.terminal .ok { color:#9dffb0; }
+.terminal .cmdline { color:#a8c0ff; }
+.terminal .screen { line-height: 1.45; }

@@ -1,0 +1,52 @@
+/* Apps/Browser/style.css */
+.browser { display:flex; flex-direction:column; height:100%; background:var(--win-bg,#0f141d); color:#e6eaf2; }
+.browser .browser-chrome { display:flex; flex-direction:column; gap:6px; padding:8px; border-bottom:1px solid #273149; background:#0f141d; }
+.browser .tabs { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.browser .tab { display:inline-flex; align-items:center; gap:6px; max-width:220px; padding:6px 8px; border-radius:10px; border:1px solid #273149; background:#151b27; color:#cfe1ff; cursor:pointer; }
+.browser .tab.active { background:#1b2333; }
+.browser .tab .fav { width:14px; height:14px; object-fit:contain; }
+.browser .tab .title { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px; }
+.browser .tab .x { margin-left:6px; border:none; background:transparent; color:#9bb7ff; cursor:pointer; }
+.browser .tab.add { width:28px; height:28px; display:inline-flex; justify-content:center; align-items:center; font-weight:600; }
+
+.browser .toolbar { display:flex; gap:8px; align-items:center; }
+.browser .toolbar .nav,
+.browser .toolbar .go  { border:1px solid #273149; background:#151b27; color:#e6eaf2; padding:6px 10px; border-radius:10px; }
+.browser .toolbar .nav:disabled { opacity:.5; }
+.browser .toolbar .omnibox { flex:1; padding:8px 10px; border:1px solid #273149; background:#0f141d; color:#e6eaf2; border-radius:10px; font-size:14px; }
+
+.browser .browser-content { position:relative; flex:1; }
+.browser webview, .browser iframe { position:absolute; inset:0; border:none; }
+.browser .infobar { position:absolute; right:8px; bottom:8px; background:#1b2333; border:1px solid #273149; color:#cfe1ff; padding:6px 10px; border-radius:10px; font-size:12px; opacity:.95; }
+/* ==== COMPACT MODE ==== */
+.browser.compact .browser-chrome { gap:4px; padding:4px 6px; }
+.browser.compact .tabs { gap:4px; }
+
+/* Sekmeler çok daha küçük */
+.browser.compact .tab {
+  padding:2px 6px;
+  gap:4px;
+  max-width:160px;
+  border-radius:8px;
+  font-size:12px;
+}
+.browser.compact .tab .fav { width:12px; height:12px; }
+.browser.compact .tab .title { max-width:100px; font-size:12px; }
+/* İstersen aktif olmayan sekmelerde başlığı gizle → sadece favicon kalsın: */
+.browser.compact .tab:not(.active) .title { display:none; }
+
+.browser.compact .tab .x { margin-left:4px; font-size:12px; }
+.browser.compact .tab.add { width:22px; height:22px; font-size:12px; }
+
+/* Araç çubuğu (geri/ileri/yenile/home + adres) */
+.browser.compact .toolbar { gap:6px; }
+.browser.compact .toolbar .nav,
+.browser.compact .toolbar .go  { padding:0px 8px; border-radius:8px; font-size:12px; }
+.browser.compact .toolbar .omnibox { padding:6px 8px; font-size:13px; }
+
+/* Chrome’un toplam yüksekliğini iyice azaltır */
+.browser.compact .browser-chrome { border-bottom-color:#22304a; }
+/* Sekmelerde yalnızca favicon göster (tümü) */
+.browser.compact .tab .title { display:none; }
+/* Aktif sekmede başlığı yine de göster */
+.browser.compact .tab.active .title { display:inline; }

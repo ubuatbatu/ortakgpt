@@ -1,0 +1,5 @@
+.notepad { display:flex; flex-direction:column; height:100%; }
+.notepad .bar { display:flex; gap:6px; padding:8px; border-bottom:1px solid #273149; }
+.notepad textarea { flex:1; width:100%; background:#0f141d; color:#e7eaf0; border:none; outline:none; padding:10px; font: 14px/1.5 Consolas, monospace; }
+.notepad input.path { flex:1; padding:6px 8px; background:#0f141d; color:#e7eaf0; border:1px solid #273149; border-radius:8px; }
+.notepad button { background:#1a2130; color:#e7eaf0; border:1px solid #273149; padding:6px 10px; border-radius:8px; }

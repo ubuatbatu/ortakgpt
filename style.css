@@ -1,0 +1,474 @@
+/* MyExplorerV2 — Rich Dark Theme + View modes + Statusbar */
+
+:root{
+  --bg-0: #0b0f14;
+  --bg-1: #0f141d;
+  --bg-2: #121826;
+  --bg-3: #161e2e;
+
+  --surface-1: rgba(15,20,29,.82);
+  --surface-2: rgba(18,24,38,.72);
+  --border: #273149;
+
+  --text-0: #eff3ff;
+  --text-1: #d5deff;
+  --text-2: #aeb7d9;
+
+  --accent: #4b6dff;
+  --accent-2: #7aa2ff;
+  --danger: #ff6b6b;
+
+  --radius-lg: 12px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+
+  --shadow-1: 0 10px 30px rgba(0,0,0,.45);
+  --shadow-2: 0 14px 40px rgba(0,0,0,.55);
+
+  --blur: 12px;
+  --trans-fast: .15s ease;
+  --trans-med: .22s cubic-bezier(.2,.7,.2,1);
+    --taskbar-h: 48px;          /* varsayılan */
+  --panel: var(--surface-1);  /* ref -> bizim tema */
+  --panel-2: var(--surface-2);
+  --border-2: var(--border);
+  --accent-weak: rgba(75,109,255,.12);
+}
+/* window resize handles */
+.window { position:absolute; }
+.window .resize-handle{ position:absolute; z-index:10; }
+.window .resize-handle.n  { top:-2px; left:6px; right:6px; height:6px; cursor:n-resize; }
+.window .resize-handle.s  { bottom:-2px; left:6px; right:6px; height:6px; cursor:s-resize; }
+.window .resize-handle.e  { top:6px; bottom:6px; right:-2px; width:6px; cursor:e-resize; }
+.window .resize-handle.w  { top:6px; bottom:6px; left:-2px;  width:6px; cursor:w-resize; }
+.window .resize-handle.ne { top:-2px; right:-2px; width:10px; height:10px; cursor:ne-resize; }
+.window .resize-handle.nw { top:-2px; left:-2px;  width:10px; height:10px; cursor:nw-resize; }
+.window .resize-handle.se { bottom:-2px; right:-2px; width:12px; height:12px; cursor:se-resize; }
+.window .resize-handle.sw { bottom:-2px; left:-2px;  width:12px; height:12px; cursor:sw-resize; }
+
+
+/* Kompakt görev çubuğu modunda yükseklik */
+body.taskbar-compact{ --taskbar-h: 34px; }
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text-0);
+  background: radial-gradient(1200px 800px at 10% -10%, #13203b 0%, transparent 60%),
+              radial-gradient(1000px 900px at 90% 120%, #1a2441 0%, transparent 55%),
+              var(--bg-0);
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: #2b3957; border-radius: 10px;
+  border: 2px solid transparent; background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: #3a4b72; }
+
+/* Shared buttons */
+button, .btn {
+  background: var(--bg-2);
+  color: var(--text-0);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: transform var(--trans-fast), background var(--trans-fast), border-color var(--trans-fast), box-shadow var(--trans-fast);
+}
+button:hover, .btn:hover { background: var(--bg-3); border-color: #314063; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
+button:active, .btn:active { transform: translateY(1px) scale(.995); }
+button:disabled, .btn:disabled { opacity: .5; cursor: default; box-shadow: none; }
+
+/* ========================= Desktop ========================= */
+
+#desktop{
+  position: fixed; inset: 0 0 48px 0; /* taskbar alanını bırak */
+  padding: 18px;
+  overflow: hidden;
+  user-select: none;
+  /* display:grid vb. YOK — absolute yerleşim kullanıyoruz */
+}
+#desktop .icon{
+  position: absolute;  /* konumlandırma */
+  width: 96px;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  cursor: default;
+  transition: transform var(--trans-fast), filter var(--trans-fast);
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,.25));
+}
+#desktop .icon:hover { transform: translateY(-2px); }
+#desktop .icon .glyph{
+  width:56px; height:56px; border-radius: 12px;
+  background: linear-gradient(180deg, #1b2234, #151c2b);
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:24px;
+  border: 1px solid #273149;
+}
+#desktop .icon .label{
+  width: 100%;
+  text-align:center; font-size:12px; line-height:1.25; word-break: break-word;
+  color: var(--text-1);
+}
+#desktop .icon.sel .glyph{ outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: 0 0 0 4px rgba(75,109,255,.14); }
+#desktop .icon.sel .label{ color: var(--text-0); }
+
+/* Desktop inline rename */
+.icon .rename-edit.desktop { width: 100%; max-width: 96px; }
+
+/* Desktop marquee */
+.marquee{
+  position: absolute; z-index: 100000; pointer-events: none;
+  border: 1px dashed var(--accent, #6aa4ff);
+  background: rgba(106,164,255,0.15);
+}
+
+/* Desktop drop target (klasör üstüne) */
+#desktop .icon.droptarget{ outline:2px dashed var(--accent); outline-offset: 2px; }
+
+/* ========================= Taskbar ========================= */
+#taskbar {
+  position: fixed; left: 0; right: 0; bottom: 0; height: var(--taskbar-h);
+  display: flex; align-items: center; gap: 10px; padding: 0 10px;
+  background: var(--surface-2); backdrop-filter: blur(var(--blur));
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -10px 24px rgba(0,0,0,.35);
+}
+#taskbar button { height: 32px; display:flex; align-items:center; gap:8px; }
+#tasklist { display: flex; gap: 8px; margin-left: auto; }
+
+/* ========================= Windows ========================= */
+/* Windows layer: sadece pencereler tıklanabilir olsun */
+#windows{
+  position: fixed;
+  inset: 0 0 var(--taskbar-h) 0;   /* taskbar yüksekliği kadar boşluk */
+  pointer-events: none; /* ÖNEMLİ: boş alan tıklamaları masaüstüne geçsin */
+  z-index: 2;
+}
+
+.window {
+  position: absolute; left: 96px; top: 96px; width: 760px; height: 560px;
+  background: var(--surface-1);
+  backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display:flex; flex-direction:column; overflow: hidden;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow var(--trans-med), transform var(--trans-med);
+    pointer-events: auto; /* pencerenin kendisi tıklanabilir */
+  z-index: 3;
+}
+.window:focus-within { box-shadow: var(--shadow-2); }
+.titlebar {
+  height: 40px; display:flex; align-items:center; justify-content: space-between;
+  padding: 0 10px; background: linear-gradient(180deg, rgba(18,24,38,.95), rgba(18,24,38,.75));
+  border-bottom:1px solid var(--border); border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.titlebar .title { font-weight: 650; letter-spacing:.2px; color: var(--text-1); }
+.titlebar .actions button { background: transparent; color: var(--text-2); border: none; font-size: 18px; padding: 4px 8px; cursor: pointer; border-radius: 6px; }
+.titlebar .actions button:hover { background: rgba(255,255,255,.04); color: var(--text-0); }
+.window .content { flex:1; overflow:auto; }
+
+/* ========================= Explorer ========================= */
+.explorer { display:flex; height:100%; }
+.explorer .sidebar {
+  width: 240px; padding: 10px;
+  border-right:1px solid var(--border);
+  background: linear-gradient(180deg, rgba(15,20,29,.9), rgba(15,20,29,.75));
+  backdrop-filter: blur(8px);
+  transition: width var(--trans-med), padding var(--trans-med), border-color var(--trans-med);
+}
+.explorer.sidebar-collapsed .sidebar { width: 0; padding: 0; border-right-color: transparent; overflow: hidden; }
+.nav .navitem {
+  padding: 8px 10px; border-radius: 8px; cursor: pointer; color: var(--text-1);
+  transition: background var(--trans-fast), transform var(--trans-fast);
+}
+.nav .navitem:hover { background:#1a2130; transform: translateX(2px); }
+.nav .navitem:active { transform: translateX(1px); }
+.nav .navitem.droptarget{ background: rgba(106,164,255,.18); border-radius: 6px; }
+
+.explorer .main { flex:1; display:flex; flex-direction:column; }
+.navbar {
+  display:flex; align-items:center; gap:8px; padding: 10px;
+  border-bottom:1px solid var(--border);
+  background: linear-gradient(180deg, rgba(15,20,29,.9), rgba(15,20,29,.75));
+  backdrop-filter: blur(8px);
+}
+.btn.nav {
+  height: 32px; padding: 0 10px; min-width: 36px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #1a2130, #131a29);
+  border-radius: 10px;
+}
+.btn.nav:hover { border-color:#314063; }
+.btn.nav:disabled { opacity:.5; cursor: default; filter: grayscale(.3); }
+.pathbox {
+  flex:1; height: 34px; padding: 6px 10px;
+  background:#0f141d; color:#e7eaf0; border:1px solid var(--border); border-radius:10px;
+  outline: none; transition: border-color var(--trans-fast), box-shadow var(--trans-fast);
+}
+.pathbox:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(75,109,255,.14); }
+.viewmode { height: 32px; background:#1a2130; color:#e7eaf0; border:1px solid var(--border); border-radius:10px; }
+
+/* ---- Details header ---- */
+.listheader { display:none; border-bottom:1px solid var(--border); padding: 6px 12px; background: rgba(15,20,29,.5); }
+.listheader .hdr {
+  display:grid;
+  grid-template-columns: 36px 1.3fr 0.7fr 0.6fr 0.5fr; /* [ikon][ad][tür][boyut][öğeler] */
+  gap:12px; font-size:12px; color: var(--text-2);
+}
+.explorer.view-details .listheader { display:block; }
+
+/* ---- List area + view modes ---- */
+.list {
+  flex:1; overflow:auto; padding: 12px;
+  display:grid; gap: 10px;
+  background: linear-gradient(180deg, rgba(15,20,29,.88), rgba(15,20,29,.74));
+  justify-content: start; align-content: start;
+}
+.explorer.view-small  .list { grid-template-columns: repeat(auto-fill, 140px); }
+.explorer.view-medium .list { grid-template-columns: repeat(auto-fill, 200px); }
+.explorer.view-large  .list { grid-template-columns: repeat(auto-fill, 260px); }
+.explorer.view-list   .list { display:block; }
+.explorer.view-details .list { display:block; }
+
+/* ---- Card item ---- */
+.item {
+  padding: 10px; border:1px solid var(--border); border-radius: 12px;
+  background: linear-gradient(180deg, #131a29, #0f141d);
+  cursor: default; user-select: none;
+  transition: transform var(--trans-fast), box-shadow var(--trans-fast), border-color var(--trans-fast), background var(--trans-fast);
+  min-height: 72px; display:flex; align-items:center; gap:12px;
+}
+.item:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,0,0,.25); border-color:#314063; }
+.item .glyph {
+  width:42px; height:42px; border-radius:10px; background:#1b2230;
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:18px;
+  border: 1px solid #28334e;
+}
+.item .name { font-size: 14px; color: var(--text-1); word-break: break-word; }
+.item .meta { margin-left: auto; display:none; gap:12px; align-items:center; color: var(--text-2); font-size: 12px; }
+.item.sel { outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: 0 0 0 4px rgba(75,109,255,.14); }
+
+/* ---- Details mode rows ---- */
+.explorer.view-details .item {
+  display:grid;
+  grid-template-columns: 36px 1.3fr 0.7fr 0.6fr 0.5fr; /* ikon sabit, kolonlar dar */
+  gap:12px; align-items:center;
+  padding: 6px 8px; border-radius: 8px; min-height: 0;
+}
+.explorer.view-details .item .glyph { grid-column: 1; width:28px; height:28px; border-radius:6px; font-size:14px; }
+.explorer.view-details .item .name  { grid-column: 2; }
+.explorer.view-details .item .meta  { display:contents; }
+.explorer.view-details .item .type  { grid-column: 3; color: var(--text-2); font-size: 12px; }
+.explorer.view-details .item .size  { grid-column: 4; color: var(--text-2); font-size: 12px; }
+.explorer.view-details .item .items { grid-column: 5; color: var(--text-2); font-size: 12px; }
+
+/* ---- List mode rows ---- */
+.explorer.view-list .item { display:flex; gap:10px; padding: 8px 10px; min-height: 0; }
+.explorer.view-list .item .meta { display:flex; margin-left:auto; gap:12px; color: var(--text-2); font-size:12px; }
+
+/* ---- Status bar ---- */
+.statusbar {
+  height: 28px; padding: 6px 12px; font-size: 12px; color: var(--text-2);
+  border-top:1px solid var(--border);
+  background: linear-gradient(180deg, rgba(15,20,29,.9), rgba(15,20,29,.7));
+}
+
+/* ========================= Context Menu ========================= */
+.ctxmenu {
+  position: fixed; z-index: 99999;
+  min-width: 210px; background: var(--surface-1); color: var(--text-0);
+  border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: var(--shadow-2);
+  padding: 6px 0; backdrop-filter: blur(10px);
+  animation: menuIn .12s ease-out;
+}
+@keyframes menuIn { from { transform: translateY(-4px); opacity: .6; } to { transform: none; opacity: 1; } }
+.ctxmenu .mi { padding: 9px 12px; cursor: default; user-select: none; white-space: nowrap; display: flex; align-items: center; gap: 10px; color: var(--text-1); }
+.ctxmenu .mi:hover:not(.dis):not(.sep) { background: #1a2232; color: var(--text-0); }
+.ctxmenu .mi.dis { opacity: .55; pointer-events: none; }
+.ctxmenu .mi.danger { color: var(--danger); }
+.ctxmenu .mi.sep { margin: 6px 0; padding: 0; border-top: 1px solid var(--border); }
+
+/* ========================= Modal (prompt yerine) ========================= */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100000;
+  background: rgba(0,0,0,.45); backdrop-filter: blur(2px);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal {
+  width: 360px; max-width: calc(100% - 32px);
+  background: var(--surface-1); backdrop-filter: blur(10px);
+  border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: var(--shadow-2); overflow: hidden;
+}
+.modal .hd { padding: 12px 14px; font-weight: 650; border-bottom:1px solid var(--border); background: linear-gradient(180deg, rgba(18,24,38,.96), rgba(18,24,38,.84)); }
+.modal .bd { padding: 14px; display:flex; flex-direction:column; gap:10px; }
+.modal .bd label { font-size:12px; color: var(--text-2); }
+.modal .bd input { width:100%; padding:8px 10px; background:#0f141d; color:#e7eaf0; border:1px solid var(--border); border-radius:10px; outline:none; }
+.modal .bd input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(75,109,255,.14); }
+.modal .ft { display:flex; justify-content:flex-end; gap:8px; padding:10px 14px; border-top:1px solid var(--border); background: rgba(15,20,29,.6); }
+.modal .ft .primary { background: linear-gradient(180deg, #314063, #243152); }
+
+/* ========================= Drag & Drop visuals ========================= */
+.item.droptarget { outline: 2px dashed var(--accent); outline-offset: 2px; }
+.drag-ghost {
+  position: absolute; z-index: 100000; pointer-events: none;
+  padding: 6px 10px; border-radius: 8px; font-size: 12px;
+  background: rgba(18,24,38,.9); color: var(--text-0); border: 1px solid var(--border);
+  box-shadow: 0 8px 18px rgba(0,0,0,.35);
+}
+
+/* ========================= Paint tweaks (varsa) ========================= */
+.paint { background: transparent; }
+.paint .toolbar {
+  display:flex; flex-wrap:wrap; gap:8px; padding:10px;
+  border-bottom:1px solid var(--border);
+  background: linear-gradient(180deg, rgba(15,20,29,.9), rgba(15,20,29,.75));
+  backdrop-filter: blur(8px);
+}
+.paint .toolbar button, .paint .toolbar select, .paint .toolbar input[type="text"] {
+  background:#1a2130; color:#e7eaf0; border:1px solid var(--border); padding:6px 10px; border-radius:10px;
+}
+.paint .toolbar button:hover { border-color:#314063; }
+.paint .canvas-wrap { position:relative; flex:1; overflow:hidden; }
+.paint canvas { position:absolute; left:0; top:0; width:100%; height:100%; background:#0f131c; cursor: crosshair; }
+.paint .status { padding:6px 10px; font-size:12px; border-top:1px solid var(--border); opacity:.85; }
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .icon, .item, .ctxmenu, .window { transition: none; animation: none; }
+}
+/* ===== Start (Başlat) Button & Menu ===== */
+#btn-start {
+  height: 32px; padding: 0 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #1a2130, #131a29);
+  color: var(--text-1);
+  display:flex; align-items:center; gap:8px;
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease, color .12s ease, transform .12s ease;
+}
+#btn-start:hover { background:#1a2130; border-color:#314063; }
+#btn-start .logo { width:18px; height:18px; display:grid; place-items:center; }
+
+#startMenu{
+  position: fixed;
+  left: 8px;
+  bottom: calc(var(--taskbar-h) + 8px); /* taskbar 48px */
+  width: 640px;
+  height: var(--start-fixed-height, 520px);
+  max-height: var(--start-fixed-height, 520px);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+  display: none;
+  z-index: 2000;
+  backdrop-filter: blur(var(--blur));
+}
+#startMenu.visible { display:block; }
+
+#startMenu .sm-layout{ display:flex; flex-direction:column; height:100%; min-height:300px; }
+
+/* header */
+#startMenu .sm-header{
+  height:44px; display:flex; align-items:center; justify-content:flex-end;
+  gap:8px; padding:0 8px; background: linear-gradient(180deg, rgba(18,24,38,.96), rgba(18,24,38,.84));
+  border-bottom:1px solid var(--border);
+}
+#startMenu .sm-gear{
+  width: 28px; height: 28px; border-radius: 8px; border:1px solid var(--border);
+  background:#1b2230; color:var(--text-1); cursor:pointer;
+}
+#startMenu .sm-gear:hover{ background:#223047; }
+
+/* body */
+#startMenu .sm-body{ display:flex; min-height:0; flex:1; }
+#startMenu .sm-left{
+  width: 180px; background: #131a23; border-right:1px solid var(--border);
+  padding:6px; display:flex; flex-direction:column; gap:4px;
+}
+#startMenu .sm-left-item{
+  display:flex; align-items:center; gap:10px;
+  padding:8px 10px; border-radius:8px; cursor:pointer; color:var(--text-1);
+}
+#startMenu .sm-left-item:hover{ background:#1a2230; }
+#startMenu .sm-left-item.active{ background: rgba(75,109,255,.12); border:1px solid var(--accent); }
+
+#startMenu .sm-right{ flex:1; min-width:0; padding:8px; overflow:auto; background: linear-gradient(180deg, rgba(15,20,29,.9), rgba(15,20,29,.75)); }
+
+#startMenu .section-title{
+  font-weight:600; opacity:.9; margin:4px 0 6px;
+  border-bottom:1px solid var(--border); padding-bottom:4px;
+}
+#startMenu .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:8px; }
+#startMenu .card{
+  background:#151d2c; border:1px solid #28334e; border-radius:10px; padding:10px; cursor:pointer;
+  display:flex; flex-direction:column; gap:6px; align-items:flex-start;
+}
+#startMenu .card:hover{ background:#1a2232; }
+#startMenu .card .emoji{ font-size:20px; }
+#startMenu .card .title{ font-weight:600; color:var(--text-0); }
+#startMenu .card .desc{ font-size:12px; color:var(--text-2); opacity:.8; }
+
+#startMenu .result{
+  display:flex; align-items:center; gap:10px; padding:8px 6px; border-radius:8px; cursor:pointer;
+}
+#startMenu .result:hover{ background:#1a2232; }
+#startMenu .result .path{ font-size:12px; color:var(--text-2); opacity:.8; }
+
+/* footer */
+#startMenu .sm-footer{
+  height:44px; display:flex; align-items:center; gap:8px; padding:6px 8px;
+  border-top:1px solid var(--border);
+  background: linear-gradient(180deg, rgba(18,24,38,.96), rgba(18,24,38,.84));
+}
+#startMenu .power{
+  width: 36px; height:32px; border-radius:8px; border:1px solid var(--border);
+  background:#1b2230; color:var(--text-1); display:grid; place-items:center; cursor:pointer;
+}
+#startMenu .power:hover{ background:#223047; }
+#startMenu .filter{
+  flex:1; height:32px; border-radius:8px; border:1px solid var(--border);
+  background:#0f141d; color:#e7eaf0; padding:0 10px; outline:none;
+}
+#startMenu .filter:focus{ border-color: var(--accent); box-shadow: 0 0 0 3px rgba(75,109,255,.14); }
+
+/* küçük görsel iyileştirmeler */
+#startMenu .quick{ display:flex; flex-direction:column; gap:6px; }
+#startMenu .quick .link{ padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:#121a2a; cursor:pointer; }
+#startMenu .quick .link:hover{ background:#172237; }
+:root { --win-titlebar-h: 28px; }
+
+.window .titlebar{
+  height: var(--win-titlebar-h);
+  line-height: var(--win-titlebar-h);
+  padding: 4px 8px;
+}
+.window.active { outline: 1px solid #5e8bff; }
+
+#task-buttons{ display:flex; gap:6px; margin-left:8px; }
+#task-buttons .task-btn{
+  background:#151b27; color:#cfe1ff; border:1px solid #273149; border-radius:8px;
+  padding:4px 8px; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+#task-buttons .task-btn.active{ outline:1px solid #5e8bff; }
+.task-preview{
+  background:#121418 !important;
+  color:#e6e6e6 !important;
+  border:1px solid #2a2f3a;
+  border-radius:10px;
+  box-shadow:0 12px 28px rgba(0,0,0,.35);
+  padding:10px; font-size:12px; line-height:1.4;
+  min-width:220px; max-width:360px;
+}
+.theme-light .task-preview{
+  background:#fff !important;
+  color:#111 !important;
+  border-color:#d0d7de;
+}

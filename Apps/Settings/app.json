@@ -1,0 +1,6 @@
+{
+  "id": "app.settings",
+  "name": "Ayarlar",
+  "entry": "main.js",
+  "styles": ["style.css"]
+}

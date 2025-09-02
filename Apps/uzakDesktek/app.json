@@ -1,0 +1,8 @@
+{
+  "id": "app.uzakdestek",
+  "name": "Uzak Destek",
+  "description": "Başka bir kullanıcının masaüstüne bağlanın veya kendi masaüstünüzü paylaşın.",
+  "entry": "main.js",
+  "styles": ["style.css"],
+  "fileAssociations": []
+}

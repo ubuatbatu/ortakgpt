@@ -1,0 +1,15 @@
+/* Style for File Manager */
+#file-manager {
+  font-family: sans-serif;
+}
+#fm-path {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+#fm-list li {
+  padding: 4px 0;
+  cursor: pointer;
+}
+#fm-list li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
